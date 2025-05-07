@@ -8,6 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { MdDeleteSweep, MdEditNote } from "react-icons/md";
+import Modal from "./Modal";
+import { useModal } from "../services/services";
 
 const Main = () => {
   const [pharmacies, setPharmacies] = useState([
@@ -21,19 +23,11 @@ const Main = () => {
       name: "Pharmacy B",
       phone: "555-5555",
       location: "8 km",
-      placeId: "CH001gVNJFE4234U9FCN42U3FH",
+      placeId: "CH001gVNJFEsds4U9FCN42U3FH",
     },
   ]);
 
-  const [editingPharmacy, setEditingPharmacy] = useState(null);
-
-  // Delete a pharmacy
-  const handleDelete = (placeId: string) => {
-    setPharmacies(
-      pharmacies.filter((pharmacy) => pharmacy.placeId !== placeId)
-    );
-  };
-
+  const { isModalOpen, openModal, closeModal } = useModal();
   return (
     <VStack align={"start"} padding={10} gap={6}>
       <Text textStyle={"3xl"} fontWeight={"bold"}>
@@ -63,7 +57,7 @@ const Main = () => {
                   {" "}
                   <IconButton
                     onClick={() => {
-                      console.log("Edit pharmacy", pharmacy);
+                      openModal();
                     }}
                   >
                     <MdEditNote />{" "}
@@ -78,6 +72,14 @@ const Main = () => {
           ))}
         </Table.Body>
       </Table.Root>
+      {isModalOpen && (
+        <Modal
+          onSave={() => {}}
+          OncloseModal={() => {
+            closeModal();
+          }}
+        />
+      )}
     </VStack>
   );
 };
