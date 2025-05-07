@@ -6,7 +6,7 @@ interface ModalProps {
   onSave: () => void;
 }
 
-const Modal = ({ OncloseModal }: ModalProps) => {
+const Modal = ({ OncloseModal, onSave }: ModalProps) => {
   return (
     <Box
       position="fixed"
@@ -38,7 +38,7 @@ const Modal = ({ OncloseModal }: ModalProps) => {
           <Input placeholder="Place ID" />
         </VStack>
         <HStack gap={4} mt={6} justifyContent="flex-end">
-          <Button colorScheme="blue" onClick={() => {}}>
+          <Button colorScheme="blue" onClick={() => onSave()}>
             Save
           </Button>
           <Button onClick={() => OncloseModal()}>Cancel</Button>

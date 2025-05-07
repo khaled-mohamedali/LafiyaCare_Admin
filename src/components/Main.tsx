@@ -9,7 +9,7 @@ import {
 import { useState } from "react";
 import { MdDeleteSweep, MdEditNote } from "react-icons/md";
 import Modal from "./Modal";
-import { useModal } from "../services/services";
+import { useModal, type Pharmacy } from "../services/services";
 
 const Main = () => {
   const [pharmacies, setPharmacies] = useState([
@@ -27,7 +27,25 @@ const Main = () => {
     },
   ]);
 
+  const [editingPharmacy, setEditingPharmacy] = useState<Pharmacy | null>(null);
+
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  const handleSave = () => {
+    const p = {
+      name: "test",
+      phone: "test",
+      location: "test",
+      placeId: "test",
+    };
+    setPharmacies((prev) =>
+      prev.map((pharmacy) =>
+        pharmacy.placeId === editingPharmacy?.placeId ? p : pharmacy
+      )
+    );
+    setEditingPharmacy(null);
+    closeModal();
+  };
 
   const handleDelete = (placeId: string) => {
     const updatedPharmacies = pharmacies.filter(
@@ -63,6 +81,7 @@ const Main = () => {
                 <HStack gap={3} justifyContent={"end"}>
                   <IconButton
                     onClick={() => {
+                      setEditingPharmacy(pharmacy);
                       openModal();
                     }}
                   >
@@ -86,7 +105,9 @@ const Main = () => {
       </Table.Root>
       {isModalOpen && (
         <Modal
-          onSave={() => {}}
+          onSave={() => {
+            handleSave();
+          }}
           OncloseModal={() => {
             closeModal();
           }}

@@ -15,3 +15,10 @@ export const useModal = () => {
     closeModal,
   };
 };
+
+export interface Pharmacy {
+  name: string;
+  phone: string;
+  location: string;
+  placeId: string;
+}
