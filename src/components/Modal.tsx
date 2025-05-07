@@ -60,10 +60,24 @@ const Modal = ({
           />
           <Input
             placeholder="Location"
-            value={edditingPharmacy?.location || ""}
+            value={
+              edditingPharmacy?.location
+                ? `${edditingPharmacy.location.latitude},${edditingPharmacy.location.longitude}`
+                : ""
+            }
             onChange={(e) => {
+              const [latitude, longitude] = e.target.value.split(",");
+
               setEdditingPharmacy((prev: Pharmacy | null) =>
-                prev ? { ...prev, location: e.target.value } : prev
+                prev
+                  ? {
+                      ...prev,
+                      location: {
+                        latitude: latitude.trim(),
+                        longitude: longitude.trim(),
+                      },
+                    }
+                  : prev
               );
             }}
           />

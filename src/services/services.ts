@@ -19,6 +19,14 @@ export const useModal = () => {
 export interface Pharmacy {
   name: string;
   phone: string;
-  location: string;
+  location: addresse; // This can map to `addresse` in Firestore
   placeId: string;
+  isEmergency: boolean;
+  openHours: string;
+  rating: number;
+}
+
+interface addresse {
+  latitude: string;
+  longitude: string;
 }

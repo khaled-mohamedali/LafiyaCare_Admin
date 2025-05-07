@@ -6,26 +6,23 @@ import {
   HStack,
   IconButton,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDeleteSweep, MdEditNote } from "react-icons/md";
 import Modal from "./Modal";
 import { useModal, type Pharmacy } from "../services/services";
+import { fetchPharmacies } from "@/services/google_services";
 
 const Main = () => {
-  const [pharmacies, setPharmacies] = useState([
-    {
-      name: "Pharmacy A",
-      phone: "555-5555",
-      location: "Anywhere",
-      placeId: "CH001gVNJFE4234U9FCN42U3FH",
-    },
-    {
-      name: "Pharmacy B",
-      phone: "555-5555",
-      location: "8 km",
-      placeId: "CH001gVNJFEsds4U9FCN42U3FH",
-    },
-  ]);
+  const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
+
+  //Fecthing the documents
+  useEffect(() => {
+    const getPharmacies = async () => {
+      const data = await fetchPharmacies();
+      setPharmacies(data);
+    };
+    getPharmacies();
+  }, []);
 
   const [editingPharmacy, setEditingPharmacy] = useState<Pharmacy | null>(null);
 
@@ -71,7 +68,9 @@ const Main = () => {
             <Table.Row key={pharmacy.placeId}>
               <Table.Cell>{pharmacy.name}</Table.Cell>
               <Table.Cell>{pharmacy.phone}</Table.Cell>
-              <Table.Cell>{pharmacy.location}</Table.Cell>
+              <Table.Cell>
+                {pharmacy.location.latitude}, {pharmacy.location.longitude}
+              </Table.Cell>
               <Table.Cell>{pharmacy.placeId}</Table.Cell>
               <Table.Cell alignContent={"end"} paddingEnd={10}>
                 <HStack gap={3} justifyContent={"end"}>
