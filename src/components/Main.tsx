@@ -32,15 +32,11 @@ const Main = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const handleSave = () => {
-    const p = {
-      name: "test",
-      phone: "test",
-      location: "test",
-      placeId: "test",
-    };
     setPharmacies((prev) =>
       prev.map((pharmacy) =>
-        pharmacy.placeId === editingPharmacy?.placeId ? p : pharmacy
+        pharmacy.placeId === editingPharmacy?.placeId
+          ? editingPharmacy
+          : pharmacy
       )
     );
     setEditingPharmacy(null);
@@ -105,6 +101,8 @@ const Main = () => {
       </Table.Root>
       {isModalOpen && (
         <Modal
+          edditingPharmacy={editingPharmacy}
+          setEdditingPharmacy={setEditingPharmacy}
           onSave={() => {
             handleSave();
           }}
