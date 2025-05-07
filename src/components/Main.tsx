@@ -28,6 +28,13 @@ const Main = () => {
   ]);
 
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  const handleDelete = (placeId: string) => {
+    const updatedPharmacies = pharmacies.filter(
+      (pharmacy) => pharmacy.placeId !== placeId
+    );
+    return setPharmacies(updatedPharmacies);
+  };
   return (
     <VStack align={"start"} padding={10} gap={6}>
       <Text textStyle={"3xl"} fontWeight={"bold"}>
@@ -54,16 +61,21 @@ const Main = () => {
               <Table.Cell>{pharmacy.placeId}</Table.Cell>
               <Table.Cell alignContent={"end"} paddingEnd={10}>
                 <HStack gap={3} justifyContent={"end"}>
-                  {" "}
                   <IconButton
                     onClick={() => {
                       openModal();
                     }}
                   >
-                    <MdEditNote />{" "}
+                    <MdEditNote />
                   </IconButton>
-                  <IconButton colorPalette={"red"} variant="solid">
-                    {" "}
+
+                  <IconButton
+                    colorPalette={"red"}
+                    variant="solid"
+                    onClick={() => {
+                      handleDelete(pharmacy.placeId);
+                    }}
+                  >
                     <MdDeleteSweep />{" "}
                   </IconButton>
                 </HStack>
