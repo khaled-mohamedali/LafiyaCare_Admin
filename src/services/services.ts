@@ -16,6 +16,12 @@ export const useModal = () => {
   };
 };
 
+export const usePharmacies = () => {
+  const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
+
+  return { pharmacies, setPharmacies };
+};
+
 export interface Pharmacy {
   name: string;
   phone: string;

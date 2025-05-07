@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 import { MdDeleteSweep, MdEditNote } from "react-icons/md";
 import Modal from "./Modal";
 import { useModal, type Pharmacy } from "../services/services";
-import { fetchPharmacies } from "@/services/google_services";
+import { fetchPharmacies, updatePharmacy } from "@/services/google_services";
 
 const Main = () => {
   const [pharmacies, setPharmacies] = useState<Pharmacy[]>([]);
@@ -29,15 +29,18 @@ const Main = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
 
   const handleSave = () => {
-    setPharmacies((prev) =>
-      prev.map((pharmacy) =>
-        pharmacy.placeId === editingPharmacy?.placeId
-          ? editingPharmacy
-          : pharmacy
-      )
-    );
-    setEditingPharmacy(null);
-    closeModal();
+    if (editingPharmacy) {
+      setPharmacies((prev) =>
+        prev.map((pharmacy) =>
+          pharmacy.placeId === editingPharmacy?.placeId
+            ? editingPharmacy
+            : pharmacy
+        )
+      );
+      updatePharmacy(editingPharmacy);
+      setEditingPharmacy(null);
+      closeModal();
+    }
   };
 
   const handleDelete = (placeId: string) => {

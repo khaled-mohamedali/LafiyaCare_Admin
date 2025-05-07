@@ -1,5 +1,12 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
+import type { Pharmacy } from "./services";
 
 // Firebase configuration from google-services.json
 const firebaseConfig = {
@@ -14,9 +21,10 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
+const pharmacy_collection = "pharmacies_niamey";
 
 export const fetchPharmacies = async () => {
-  const pharmaciesCollection = collection(db, "pharmacies_niamey");
+  const pharmaciesCollection = collection(db, pharmacy_collection);
 
   const snapshot = await getDocs(pharmaciesCollection);
 
@@ -33,4 +41,23 @@ export const fetchPharmacies = async () => {
       rating: data.rating || 0, // Default to `0` if missing
     };
   });
+};
+
+export const updatePharmacy = async (pharmacy: Pharmacy) => {
+  const docRef = doc(db, pharmacy_collection, pharmacy.placeId);
+
+  try {
+    await updateDoc(docRef, {
+      name: pharmacy.name,
+      phone: pharmacy.phone,
+      location: pharmacy.location,
+      isEmergency: pharmacy.isEmergency,
+      openHours: pharmacy.openHours,
+      rating: pharmacy.rating,
+    });
+
+    console.log("Success");
+  } catch (error) {
+    console.log(error);
+  }
 };
