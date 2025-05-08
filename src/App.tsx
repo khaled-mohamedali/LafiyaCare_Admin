@@ -1,7 +1,7 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import "./App.css";
 import Aside from "./components/Aside";
-import Main from "./components/Main";
+// import Main from "./components/Main";
 import MainGarde from "./components/MainGarde";
 
 function App() {
