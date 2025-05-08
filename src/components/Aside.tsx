@@ -16,8 +16,11 @@ const Aside = () => {
       <Button colorPalette="blue" variant="solid">
         Dashboard
       </Button>
+      <Button colorPalette="blue" variant="solid">
+        Gérer les Pharmacies de Garde
+      </Button>
       <Button colorPalette="white" variant="solid">
-        Logout
+        Se Déconnecter
       </Button>
     </VStack>
   );
