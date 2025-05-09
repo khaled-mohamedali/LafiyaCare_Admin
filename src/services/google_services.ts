@@ -84,7 +84,7 @@ export const fecthEmergencyPharmacies = async () => {
 };
 
 export const displayPharmacies = async () => {
-  const [currentEmergencies, docRef] = await fecthEmergencyPharmacies();
+  const [currentEmergencies] = await fecthEmergencyPharmacies();
 
   return currentEmergencies.map((e: EmergencyPharmacy) => {
     return {

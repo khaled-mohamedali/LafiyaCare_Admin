@@ -49,6 +49,14 @@ const MainGarde = () => {
 
   const { openModal, closeModal, isModalOpen } = useModal();
 
+  function handleDelete(placeId: any) {
+    //get the new list of pharmacies after filtering
+    const updatedEmergencyList = emergencyPharmacies.filter(
+      (pharmacy) => pharmacy.id !== placeId
+    );
+    setEmergencyPharmacies(updatedEmergencyList);
+  }
+
   return (
     <VStack align={"start"} padding={10} gap={6}>
       <HStack justifyContent={"space-between"} width={"100%"}>
@@ -86,9 +94,9 @@ const MainGarde = () => {
                   <IconButton
                     colorPalette={"red"}
                     variant="solid"
-                    // onClick={() => {
-                    //   handleDelete(pharmacy.placeId);
-                    // }}
+                    onClick={() => {
+                      handleDelete(pharmacy.id);
+                    }}
                   >
                     <MdDeleteSweep />{" "}
                   </IconButton>
