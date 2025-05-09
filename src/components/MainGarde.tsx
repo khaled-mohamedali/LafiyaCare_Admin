@@ -1,4 +1,8 @@
-import { type EmergencyPharmacy } from "@/services/google_services";
+import {
+  addEmergencyPharmacy,
+  displayPharmacies,
+  type EmergencyPharmacy,
+} from "@/services/google_services";
 import { useModal } from "@/services/services";
 import {
   Button,
@@ -9,7 +13,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MdDeleteSweep } from "react-icons/md";
 import ModalEmergency from "./ModalEmergency";
 
@@ -21,19 +25,22 @@ const MainGarde = () => {
   const [newEmergencyPharmacy, setNewEmergencyPharmacy] =
     useState<EmergencyPharmacy | null>(null);
 
-  //   useEffect(() => {
-  //     const fetchData = async () => {
-  //       const result = await fecthEmergencyPharmacies();
-  //       setEmergencyPharmacies(result);
-  //     };
-  //     fetchData();
-  //   }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await displayPharmacies();
+
+      setEmergencyPharmacies(result);
+    };
+    fetchData();
+  }, []);
 
   const handleAddPharmacy = () => {
     if (newEmergencyPharmacy) {
       setEmergencyPharmacies((prev) => [...prev, newEmergencyPharmacy]);
       //clear the modal input
       setNewEmergencyPharmacy(null);
+
+      addEmergencyPharmacy(newEmergencyPharmacy);
 
       //close the modal
       closeModal();

@@ -66,30 +66,50 @@ export const updatePharmacy = async (pharmacy: Pharmacy) => {
 export const fecthEmergencyPharmacies = async () => {
   const docRef = doc(db, "pharmacies_de_garde", "current");
 
-  const snapshot = await getDoc(docRef);
+  try {
+    const snapshot = await getDoc(docRef);
 
-  if (snapshot.exists()) {
-    const data = snapshot.data();
+    if (snapshot.exists()) {
+      const data = snapshot.data();
 
-    return data.Emergencies || [];
+      return [data.Emergencies || [], docRef];
+    } else {
+      console.error("Document does not exist");
+      return [[], docRef]; // Return an empty array if the document doesn't exist
+    }
+  } catch (error) {
+    console.error("Error fetching emergencies:", error);
+    return [[], docRef]; // Return an empty array in case of an error
   }
 };
 
-export const addEmergencyPharmacy = async () => {
-  const docRef = doc(db, "pharmacies_de_garde", "current");
-  const p = [
-    { name: "test", id: "CDNE233249UFNCNWWEN2" },
-    { name: "test1", id: "CDNE2332ew49UFNCNWWEN2" },
-    { name: "test2", id: "CDNE23eew3249UFNCNWWEN2" },
-  ];
+export const displayPharmacies = async () => {
+  const [currentEmergencies, docRef] = await fecthEmergencyPharmacies();
 
-  try {
-    // const snapshot = await getDoc(docRef);
+  return currentEmergencies.map((e: EmergencyPharmacy) => {
+    return {
+      name: e.name,
+      id: e.id,
+    };
+  });
+};
 
-    await updateDoc(docRef, { Emergencies: p });
-    console.log("Success");
-  } catch (error) {
-    console.log(error);
+export const addEmergencyPharmacy = async (
+  emergencyPharmacy: EmergencyPharmacy
+) => {
+  const [currentEmergencies, docRef] = await fecthEmergencyPharmacies();
+
+  //checking if the pharmacy already exist
+  const alreadyExists = currentEmergencies.some(
+    (pharmacy: EmergencyPharmacy) => pharmacy.id === emergencyPharmacy.id
+  );
+
+  if (!alreadyExists) {
+    const updatedEmergencies = [...currentEmergencies, emergencyPharmacy];
+    //populating firebase
+
+    await await updateDoc(docRef, { Emergencies: updatedEmergencies });
+    console.log("Pharmacy added successfully");
   }
 };
 
