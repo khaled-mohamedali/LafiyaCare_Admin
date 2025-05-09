@@ -1,37 +1,46 @@
-import {
-  addEmergencyPharmacy,
-  fecthEmergencyPharmacies,
-  type EmergencyPharmacy,
-} from "@/services/google_services";
+import { type EmergencyPharmacy } from "@/services/google_services";
+import { useModal } from "@/services/services";
 import {
   Button,
   HStack,
   IconButton,
-  List,
   Table,
   TableColumnHeader,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
-import { MdEditNote, MdDeleteSweep } from "react-icons/md";
+import { useState } from "react";
+import { MdDeleteSweep } from "react-icons/md";
+import ModalEmergency from "./ModalEmergency";
 
 const MainGarde = () => {
   const [emergencyPharmacies, setEmergencyPharmacies] = useState<
     EmergencyPharmacy[]
   >([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await fecthEmergencyPharmacies();
-      setEmergencyPharmacies(result);
-    };
-    fetchData();
-  }, []);
+  const [newEmergencyPharmacy, setNewEmergencyPharmacy] =
+    useState<EmergencyPharmacy | null>(null);
 
-  const handleAddPharmacy = async () => {
-    await addEmergencyPharmacy(); // Call the function to add data
+  //   useEffect(() => {
+  //     const fetchData = async () => {
+  //       const result = await fecthEmergencyPharmacies();
+  //       setEmergencyPharmacies(result);
+  //     };
+  //     fetchData();
+  //   }, []);
+
+  const handleAddPharmacy = () => {
+    if (newEmergencyPharmacy) {
+      setEmergencyPharmacies((prev) => [...prev, newEmergencyPharmacy]);
+      //clear the modal input
+      setNewEmergencyPharmacy(null);
+
+      //close the modal
+      closeModal();
+    }
   };
+
+  const { openModal, closeModal, isModalOpen } = useModal();
 
   return (
     <VStack align={"start"} padding={10} gap={6}>
@@ -39,7 +48,14 @@ const MainGarde = () => {
         <Text textStyle={"3xl"} fontWeight={"bold"}>
           Pharmacies de Garde
         </Text>
-        <Button>Ajouter une pharmacie</Button>
+        <Button
+          onClick={() => {
+            setNewEmergencyPharmacy({ name: "", id: "" });
+            openModal();
+          }}
+        >
+          Ajouter une pharmacie
+        </Button>
       </HStack>
 
       <Table.Root>
@@ -61,15 +77,6 @@ const MainGarde = () => {
               <Table.Cell alignContent={"end"} paddingEnd={10}>
                 <HStack gap={3} justifyContent={"end"}>
                   <IconButton
-                    onClick={() => {
-                      //   setEditingPharmacy(pharmacy);
-                      //   openModal();
-                    }}
-                  >
-                    <MdEditNote />
-                  </IconButton>
-
-                  <IconButton
                     colorPalette={"red"}
                     variant="solid"
                     // onClick={() => {
@@ -84,6 +91,14 @@ const MainGarde = () => {
           ))}
         </Table.Body>
       </Table.Root>
+      {isModalOpen && (
+        <ModalEmergency
+          emergencyPharmacy={newEmergencyPharmacy}
+          setEmergencyPharmacy={setNewEmergencyPharmacy}
+          onSave={() => handleAddPharmacy()}
+          OncloseModal={() => closeModal()}
+        />
+      )}
     </VStack>
   );
 };

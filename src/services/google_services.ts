@@ -1,12 +1,11 @@
 import { initializeApp } from "firebase/app";
 import {
-  getFirestore,
   collection,
-  getDocs,
   doc,
-  updateDoc,
-  addDoc,
   getDoc,
+  getDocs,
+  getFirestore,
+  updateDoc,
 } from "firebase/firestore";
 import type { Pharmacy } from "./services";
 

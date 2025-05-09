@@ -6,7 +6,6 @@ export const useModal = () => {
     setIsModalOpen(true);
   };
   const closeModal = () => {
-    console.log("close modal");
     setIsModalOpen(false);
   };
   return {
