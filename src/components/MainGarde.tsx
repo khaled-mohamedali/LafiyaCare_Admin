@@ -2,9 +2,10 @@ import {
   addEmergencyPharmacy,
   deleteEmergencyPharmacy,
   displayPharmacies,
+  fetchPharmacies,
   type EmergencyPharmacy,
 } from "@/services/google_services";
-import { useModal } from "@/services/services";
+import { useModal, type Pharmacy } from "@/services/services";
 import {
   Button,
   HStack,
@@ -23,12 +24,18 @@ const MainGarde = () => {
     EmergencyPharmacy[]
   >([]);
 
+  const [allPharmacies, setPharmacies] = useState<Pharmacy[]>([]);
+
   const [newEmergencyPharmacy, setNewEmergencyPharmacy] =
     useState<EmergencyPharmacy | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const result = await displayPharmacies();
+
+      const resultPharmacies = await fetchPharmacies();
+
+      setPharmacies(resultPharmacies);
 
       setEmergencyPharmacies(result);
     };
@@ -109,6 +116,7 @@ const MainGarde = () => {
       </Table.Root>
       {isModalOpen && (
         <ModalEmergency
+          allPharmacies={allPharmacies}
           emergencyPharmacy={newEmergencyPharmacy}
           setEmergencyPharmacy={setNewEmergencyPharmacy}
           onSave={() => handleAddPharmacy()}

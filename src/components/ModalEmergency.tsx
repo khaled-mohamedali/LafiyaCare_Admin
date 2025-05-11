@@ -1,5 +1,7 @@
 import type { EmergencyPharmacy } from "@/services/google_services";
+import type { Pharmacy } from "@/services/services";
 import { Box, Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import Select from "react-select";
 
 //Create a prop for the modal to close it
 interface ModalProps {
@@ -9,6 +11,7 @@ interface ModalProps {
   >;
   OncloseModal: () => void;
   onSave: () => void;
+  allPharmacies: Pharmacy[];
 }
 
 const ModalEmergency = ({
@@ -16,7 +19,13 @@ const ModalEmergency = ({
   onSave,
   emergencyPharmacy,
   setEmergencyPharmacy,
+  allPharmacies,
 }: ModalProps) => {
+  //conversting pharmacies to options
+  const options = allPharmacies.map((pharmacy) => ({
+    label: pharmacy.name,
+    value: pharmacy.placeId,
+  }));
   return (
     <Box
       position="fixed"
@@ -42,15 +51,38 @@ const ModalEmergency = ({
           Edit Pharmacy
         </Text>
         <VStack gap={4}>
-          <Input
-            placeholder="Name"
-            value={emergencyPharmacy?.name || ""}
-            onChange={(e) => {
-              setEmergencyPharmacy((prev: EmergencyPharmacy | null) =>
-                prev ? { ...prev, name: e.target.value } : prev
-              );
+          {/*React Select Dropdown*/}
+          <Select
+            options={options}
+            value={
+              emergencyPharmacy
+                ? {
+                    label: emergencyPharmacy?.name,
+                    value: emergencyPharmacy?.id,
+                  }
+                : null
+            }
+            onChange={(selectedOption) => {
+              if (selectedOption)
+                setEmergencyPharmacy((prev: EmergencyPharmacy | null) =>
+                  prev
+                    ? {
+                        ...prev,
+                        name: selectedOption.label,
+                        id: selectedOption.value,
+                      }
+                    : prev
+                );
+            }}
+            styles={{
+              control: (base) => ({
+                ...base,
+                width: "100%", // Set the width to 100% of the parent container
+                minWidth: "300px", // Set a minimum width
+              }),
             }}
           />
+
           <Input
             placeholder="Place Id"
             value={emergencyPharmacy?.id || ""}
