@@ -1,4 +1,4 @@
-import { VStack, Text, Button } from "@chakra-ui/react";
+import { Button, Text, VStack } from "@chakra-ui/react";
 
 const Aside = () => {
   return (
@@ -14,10 +14,10 @@ const Aside = () => {
         LafiyaCare
       </Text>
       <Button colorPalette="blue" variant="solid">
-        Dashboard
+        <a href="/">Dashboard</a>
       </Button>
       <Button colorPalette="blue" variant="solid">
-        Gérer les Pharmacies de Garde
+        <a href="/pharmaciesdegarde"> Gérer les Pharmacies de Garde</a>
       </Button>
       <Button colorPalette="white" variant="solid">
         Se Déconnecter
