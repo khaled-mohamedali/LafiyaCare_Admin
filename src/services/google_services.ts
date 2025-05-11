@@ -113,6 +113,22 @@ export const addEmergencyPharmacy = async (
   }
 };
 
+export const deleteEmergencyPharmacy = async (id: string) => {
+  try {
+    const [currentEmergencies, docRef] = await fecthEmergencyPharmacies();
+
+    const updateEmergencyList = currentEmergencies.filter(
+      (pharmacy: EmergencyPharmacy) => pharmacy.id !== id
+    );
+
+    updateDoc(docRef, { Emergencies: updateEmergencyList });
+
+    return updateEmergencyList;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export interface EmergencyPharmacy {
   id: string;
   name: string;

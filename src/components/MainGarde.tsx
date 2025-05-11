@@ -1,5 +1,6 @@
 import {
   addEmergencyPharmacy,
+  deleteEmergencyPharmacy,
   displayPharmacies,
   type EmergencyPharmacy,
 } from "@/services/google_services";
@@ -49,12 +50,12 @@ const MainGarde = () => {
 
   const { openModal, closeModal, isModalOpen } = useModal();
 
-  function handleDelete(placeId: any) {
+  function handleDelete(placeId: string) {
     //get the new list of pharmacies after filtering
-    const updatedEmergencyList = emergencyPharmacies.filter(
-      (pharmacy) => pharmacy.id !== placeId
-    );
-    setEmergencyPharmacies(updatedEmergencyList);
+
+    deleteEmergencyPharmacy(placeId).then((updatedEmergencyList) => {
+      if (updatedEmergencyList) setEmergencyPharmacies(updatedEmergencyList);
+    });
   }
 
   return (
