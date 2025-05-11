@@ -1,4 +1,5 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
 const Aside = () => {
   return (
@@ -14,10 +15,10 @@ const Aside = () => {
         LafiyaCare
       </Text>
       <Button colorPalette="blue" variant="solid">
-        <a href="/">Dashboard</a>
+        <Link to="/">Dashboard</Link>
       </Button>
       <Button colorPalette="blue" variant="solid">
-        <a href="/pharmaciesdegarde"> Gérer les Pharmacies de Garde</a>
+        <Link to="/pharmaciesdegarde"> Gérer les Pharmacies de Garde</Link>
       </Button>
       <Button colorPalette="white" variant="solid">
         Se Déconnecter
